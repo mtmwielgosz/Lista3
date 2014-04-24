@@ -42,7 +42,7 @@ private static void zamiana()
 	wynik = 0;
 	boolean done;
 	Stack<String> stos = new Stack<String>();
-	StringTokenizer st = new StringTokenizer(w, "+-*/()", true);
+	StringTokenizer st = new StringTokenizer(w, "+-*/()",true);
      
 	while(st.hasMoreTokens()) 
 	{
@@ -90,7 +90,8 @@ public static double wynik()
 			 stosW.push(d(s.charAt(0),x,y));
 		 }
 		 else
-			 stosW.push(Double.parseDouble(s));
+			 stosW.push(Double.parseDouble(s));		 	
+
 
 
 	}
@@ -116,6 +117,7 @@ public static void zPliku() throws FileNotFoundException
 	while(r.hasNext())
 	{
 		w = r.nextLine();
+		System.out.println("Wyra¿enie infiksowe: \n> "+w);
 		zamiana();
 		System.out.println("Wyra¿enie OPN: \n> "+wP+"= "+wynik());
 		System.out.println();
@@ -136,15 +138,23 @@ public static void main(String args[]) throws FileNotFoundException
 		System.out.println("2 - wczytaj wyra¿enia z pliku tekstowego");
 		System.out.println("3 - koniec");
 		pom = sc.nextInt();
-		if(pom == 1)
-			zKlaw();
-		if(pom == 2)
-			zPliku();
+		try
+		{
+			if(pom == 1)
+				zKlaw();
+			if(pom == 2)
+				zPliku();
+		}
+		catch (Exception e)
+		{
+			System.out.println("Znaleziono jeden lub wiêcej b³êdów w zapisie: \n- nieparzysta liczba nawiasów, \n- wpisanie liczby ujemnej do dzia³ania (zamiast -x wpisz (0-x) np. (-2*3) -> ((0-2)*3),\n- wpisz * przed nawiasem, przez który chcesz pomno¿yæ,\n- inne b³êdy zapisu.  ");
+			System.out.println();
+		}
 	}
 	while(pom!=3);
 
-
 }
+
 
 }
 
