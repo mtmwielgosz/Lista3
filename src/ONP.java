@@ -12,13 +12,12 @@ public static String wP;
 
 public static int p(String op) 
 {
-
-if(op.equals("+") || op.equals("-")) 
-	return 1;
-if(op.equals("*") || op.equals("/")) 
-	return 2;
-
-return 0;
+	if(op.equals("+") || op.equals("-")) 
+		return 1;
+	if(op.equals("*") || op.equals("/")) 
+		return 2;
+	
+	return 0;
 }
 
 public static double d(char c, double x, double y)
@@ -35,49 +34,46 @@ public static double d(char c, double x, double y)
 			return y/x;
 	}
 	return 0;
-	
 }
 
 private static void zamiana() 
 {
-wP = "";  
-wynik = 0;
-boolean done;
-Stack<String> stos = new Stack<String>();
-StringTokenizer st = new StringTokenizer(w, "+-*/()", true);
+	wP = "";  
+	wynik = 0;
+	boolean done;
+	Stack<String> stos = new Stack<String>();
+	StringTokenizer st = new StringTokenizer(w, "+-*/()", true);
      
-while(st.hasMoreTokens()) 
-{
-	done = false;
-	String s = st.nextToken();
-	if(s.equals("+") || s.equals("*") || s.equals("-") || s.equals("/")) 
+	while(st.hasMoreTokens()) 
 	{
-		while(!stos.empty() && p(stos.peek()) >= p(s)) 
-			wP += stos.pop()  + " ";
-		stos.push(s);
-		done = true;
+		done = false;
+		String s = st.nextToken();
+		if(s.equals("+") || s.equals("*") || s.equals("-") || s.equals("/")) 
+		{
+			while(!stos.empty() && p(stos.peek()) >= p(s)) 
+				wP += stos.pop()  + " ";
+			stos.push(s);
+			done = true;
+		}
+
+		if(!done && s.equals("(")) 
+		{
+			stos.push(s);
+			done = true;
+		}
+
+		if(!done && s.equals(")")) 
+		{
+			while(!stos.peek().equals("(")) 
+				wP += stos.pop() + " ";
+			stos.pop();
+			done = true;
+		}
+		if(!done)
+			wP += s  + " ";
 	}
-
-	if(!done && s.equals("(")) 
-	{
-		stos.push(s);
-		done = true;
-	}
-
-	if(!done && s.equals(")")) 
-	{
-		while(!stos.peek().equals("(")) 
-			wP += stos.pop() + " ";
-		stos.pop();
-		done = true;
-	}
-	if(!done)
-		wP += s  + " ";
-}
-
-while(!stos.empty()) 
-	wP += stos.pop()  + " ";
-
+	while(!stos.empty()) 
+		wP += stos.pop()  + " ";
 }
 
 public static double wynik()
