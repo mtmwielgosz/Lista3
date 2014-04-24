@@ -102,45 +102,6 @@ public static double wynik()
 }
 
 
-//metoda oblicza wartoœæ wyra¿enia postfiksowego
-private static double oblicz() {
-
-// tworzymy pusty stos
-Stack<Double> stos = new Stack<Double>();
-     
-// dzielimy wyra¿enie postfiksowe na elementy na podstawie spacji
-StringTokenizer st = new StringTokenizer(wP, " ");
-     
-// dopóki s¹ elementy w wyra¿eniu wejœciowym
-while(st.hasMoreTokens()) {
-// pobieramy element
-String s = st.nextToken();
-
-// jeœli element nie jest operatorem (czyli jest wartoœci¹)
-if (!s.equals("+") && !s.equals("*") && !s.equals("-") && !s.equals("/")) {
-// zamieniamy ³añcuch na liczbê
-double wartosc = Double.parseDouble(s);
-// odk³adamy wartoœæ na stos
-stos.push(wartosc);
-}
-else {
-//  jeœli element jest operatorem œci¹gamy dwie wartoœci ze stosu
-double wartosc1 = stos.pop();
-double wartosc2 = stos.pop();
-// w zale¿noœci od operatora obliczamy wynik i odk³adamy go na stos
-switch(s.charAt(0)) {
- case '*': {stos.push(wartosc2 * wartosc1); break;}
- case '+': {stos.push(wartosc2 + wartosc1); break;}
- case '-': {stos.push(wartosc2 - wartosc1); break;}
- case '/': {stos.push(wartosc2 / wartosc1); break;}
-}
-}
-}
-// zwracamy koñcowy wynik
-return stos.pop();
-}
-
-
 
 public static void zKlaw()
 {
