@@ -5,6 +5,7 @@ import java.util.*;
 public class ONP {
 
 static Scanner sc = new Scanner(System.in);
+public static boolean ZleZnaki;
 public static String w;
 public static double wynik;
 public static String wP; 
@@ -38,6 +39,7 @@ public static double d(char c, double x, double y)
 
 private static void zamiana() 
 {
+	ZleZnaki = false;
 	wP = "";  
 	wynik = 0;
 	boolean done;
@@ -70,7 +72,19 @@ private static void zamiana()
 			done = true;
 		}
 		if(!done)
-			wP += s  + " ";
+		{
+			try
+			{
+				Double.parseDouble(s);
+				wP += s  + " ";
+				done = true;
+			}
+			catch(NumberFormatException e)
+			{
+				ZleZnaki = true;
+			}
+		}
+
 	}
 	while(!stos.empty()) 
 		wP += stos.pop()  + " ";
@@ -99,13 +113,40 @@ public static double wynik()
 }
 
 
+public static boolean ParzNaw() 
+{
+	int nawOt = 0;
+	int nawZam = 0;
+	String t;
+	StringTokenizer st = new StringTokenizer(w, "()", true);
+	while(st.hasMoreTokens()) 
+	{
+		t = st.nextToken();
+		if(t.equals("("))
+			nawOt++;
+		if(t.equals(")"))
+			nawZam++;
+	}
+
+return nawOt == nawZam;        
+}
+
+
+
 
 public static void zKlaw()
 {
 	System.out.print ("Wyra¿enie infiksowe: \n> ");
 	w = sc.next();
 	zamiana();
-	System.out.println("Wyra¿enie OPN: \n> "+wP+"= "+wynik());
+	if(ZleZnaki)
+		System.out.println("Podano niedozwolone znaki (litery, znaki specjalne, inne).");
+	else
+		if(!ParzNaw())
+			System.out.println("Nieparzysta liczba nawiasów.");
+		else
+			System.out.println("Wyra¿enie OPN: \n> "+wP+"= "+wynik());
+	
 	System.out.println();
 }
 
@@ -119,7 +160,13 @@ public static void zPliku() throws FileNotFoundException
 		w = r.nextLine();
 		System.out.println("Wyra¿enie infiksowe: \n> "+w);
 		zamiana();
-		System.out.println("Wyra¿enie OPN: \n> "+wP+"= "+wynik());
+		if(ZleZnaki)
+			System.out.println("Podano niedozwolone znaki (litery, znaki specjalne, inne).");
+		else
+			if(!ParzNaw())
+				System.out.println("Nieparzysta liczba nawiasów.");
+			else
+				System.out.println("Wyra¿enie OPN: \n> "+wP+"= "+wynik());
 		System.out.println();
 	}
 	r.close();
@@ -138,6 +185,7 @@ public static void main(String args[]) throws FileNotFoundException
 		System.out.println("2 - wczytaj wyra¿enia z pliku tekstowego");
 		System.out.println("3 - koniec");
 		pom = sc.nextInt();
+		
 		try
 		{
 			if(pom == 1)
@@ -147,7 +195,7 @@ public static void main(String args[]) throws FileNotFoundException
 		}
 		catch (Exception e)
 		{
-			System.out.println("Znaleziono jeden lub wiêcej b³êdów w zapisie: \n- nieparzysta liczba nawiasów, \n- wpisanie liczby ujemnej do dzia³ania (zamiast -x wpisz (0-x) np. (-2*3) -> ((0-2)*3),\n- wpisz * przed nawiasem, przez który chcesz pomno¿yæ,\n- inne b³êdy zapisu.  ");
+			System.out.println("Znaleziono jeden lub wiêcej innych b³êdów w zapisie:\n- liczba ujemna w dzia³aniu (zamiast -x wpisz (0-x) np. (-2*3) -> ((0-2)*3),\n- wpisz * przed nawiasem, przez który chcesz pomno¿yæ,\n- inne b³êdy zapisu.");
 			System.out.println();
 		}
 	}
